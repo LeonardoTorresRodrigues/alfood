@@ -8,6 +8,20 @@ import { IPaginacao } from '../../interfaces/IPaginacao';
 const ListaRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([]);
   const [proximaPagina, setProximaPagina] = useState('');
+  const [paginaAnterior, setPaginaAnterior] = useState('');
+
+  const carregarDados = (url: string) => {
+    axios
+      .get<IPaginacao<IRestaurante>>(url)
+      .then((res) => {
+        setRestaurantes(res.data.results);
+        setProximaPagina(res.data.next);
+        setPaginaAnterior(res.data.previous);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     axios
@@ -23,17 +37,17 @@ const ListaRestaurantes = () => {
       });
   }, []);
 
-  const verMais = () => {
-    axios
-      .get<IPaginacao<IRestaurante>>(proximaPagina)
-      .then((res) => {
-        setRestaurantes([...restaurantes, ...res.data.results]);
-        setProximaPagina(res.data.next);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const verMais = () => {
+  //   axios
+  //     .get<IPaginacao<IRestaurante>>(proximaPagina)
+  //     .then((res) => {
+  //       setRestaurantes([...restaurantes, ...res.data.results]);
+  //       setProximaPagina(res.data.next);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <section className={style.ListaRestaurantes}>
@@ -43,7 +57,22 @@ const ListaRestaurantes = () => {
       {restaurantes?.map((item) => (
         <Restaurante restaurante={item} key={item.id} />
       ))}
-      {proximaPagina && <button onClick={verMais}>ver mais</button>}
+      {
+        <button
+          onClick={() => carregarDados(paginaAnterior)}
+          disabled={!paginaAnterior}
+        >
+          Página Anterior
+        </button>
+      }
+      {
+        <button
+          onClick={() => carregarDados(proximaPagina)}
+          disabled={!proximaPagina}
+        >
+          Próxima página
+        </button>
+      }
     </section>
   );
 };
