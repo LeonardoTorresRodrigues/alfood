@@ -18,6 +18,10 @@ function App() {
         path="/admin/restaurantes/novo"
         element={<FormularioRestaurante />}
       />
+      <Route
+        path="/admin/restaurantes/:id"
+        element={<FormularioRestaurante />}
+      />
     </Routes>
   );
 }

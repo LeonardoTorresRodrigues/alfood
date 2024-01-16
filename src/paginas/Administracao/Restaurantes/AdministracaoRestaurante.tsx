@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import IRestaurante from '../../../interfaces/IRestaurante';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const AdministracaoRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([]);
@@ -26,12 +27,18 @@ const AdministracaoRestaurantes = () => {
         <TableHead>
           <TableRow>
             <TableCell>Nome</TableCell>
+            <TableCell>Editar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {restaurantes.map((restaurante) => (
             <TableRow key={restaurante.id}>
               <TableCell>{restaurante.nome}</TableCell>
+              <TableCell>
+                [
+                <Link to={`/admin/restaurantes/${restaurante.id}`}>editar</Link>
+                ]
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
