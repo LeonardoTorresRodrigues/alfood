@@ -10,29 +10,25 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import IRestaurante from '../../../interfaces/IRestaurante';
-import axios from 'axios';
+import http from '../../../http';
 import { Link } from 'react-router-dom';
 
 const AdministracaoRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([]);
 
   useEffect(() => {
-    axios
-      .get<IRestaurante[]>('http://localhost:8000/api/v2/restaurantes/')
+    http
+      .get<IRestaurante[]>('restaurantes/')
       .then((res) => setRestaurantes(res.data));
   }, []);
 
   const excluir = (restauranteAhSerExcluido: IRestaurante) => {
-    axios
-      .delete(
-        `http://localhost:8000/api/v2/restaurantes/${restauranteAhSerExcluido.id}/`,
-      )
-      .then(() => {
-        const listaRestaurante = restaurantes.filter(
-          (restaurante) => restaurante.id !== restauranteAhSerExcluido.id,
-        );
-        setRestaurantes([...listaRestaurante]);
-      });
+    http.delete(`restaurantes/${restauranteAhSerExcluido.id}/`).then(() => {
+      const listaRestaurante = restaurantes.filter(
+        (restaurante) => restaurante.id !== restauranteAhSerExcluido.id,
+      );
+      setRestaurantes([...listaRestaurante]);
+    });
   };
 
   return (
