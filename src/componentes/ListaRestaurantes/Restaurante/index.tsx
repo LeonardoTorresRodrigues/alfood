@@ -15,7 +15,7 @@ const Restaurante = ({ restaurante }: RestauranteProps) => {
   useEffect(() => {
     axios
       .get<IPrato[]>(
-        `http://localhost:8000/api/v1/restaurantes/${restaurante.id}/pratos`,
+        `http://localhost:8000/api/v1/restaurantes/${restaurante.id}/pratos/`,
       )
       .then((res) => {
         setPratos(res.data);
